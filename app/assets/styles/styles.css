@@ -1,0 +1,14 @@
+$mainColor : #345324;
+
+h1 {
+    color: $mainColor;
+    padding: 12px;
+    columns: 300px 2;
+
+    p {
+        margin: 0 10px;
+    }
+    a {
+        border: 2px solid blue;
+    }
+}
