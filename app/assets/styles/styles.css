@@ -9,6 +9,8 @@ h1 {
         margin: 0 10px;
     }
     a {
-        border: 2px solid blue;
+        border: 2px solid $mainColor;
+        padding-left: 40px;
     }
+
 }
