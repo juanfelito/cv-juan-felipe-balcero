@@ -14,6 +14,15 @@
     &--gutters-large {
         margin-right: -100px;
     }
+    &--gutters-small > div {
+        padding-right: 45px;
+    }
+    &--gutters-small {
+        margin-right: -45px;
+    }
+    &--t-padding {
+        padding-top: 80px;
+    }
 
     @mixin atMedium {
         &__md-4 {
@@ -35,6 +44,18 @@
             &--smaller {
                 width: 63%;
             }
+        }
+    }
+
+    &--equal-height-at-md {
+
+        @mixin atMedium {
+            display: flex;
+        }
+
+        & > div {
+            float: none;
+            display: flex;
         }
     }
 }
