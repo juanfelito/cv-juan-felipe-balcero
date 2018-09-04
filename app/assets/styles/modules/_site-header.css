@@ -23,7 +23,7 @@
 
         @mixin atMedium {
             left: auto;
-        transform: translateX(0);
+            transform: translateX(0);
         }
 
         &__graphic {

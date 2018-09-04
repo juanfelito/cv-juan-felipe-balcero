@@ -1118,8 +1118,8 @@ a {
 
 .site-header__logo {
             left: auto;
-        -webkit-transform: translateX(0);
-                transform: translateX(0)
+            -webkit-transform: translateX(0);
+                    transform: translateX(0)
     }
     }
 
