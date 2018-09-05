@@ -20,4 +20,12 @@ gulp.task('watch', () => {
     watch('./app/temp/styles/styles.css', () => {
         browserSync.reload();    
     });
+
+    watch('./app/assets/scripts/**/*.js', () => {
+        gulp.start('scripts');
+    });
+
+    watch('./app/temp/scripts/App.js', () => {
+        browserSync.reload();    
+    });
 });
