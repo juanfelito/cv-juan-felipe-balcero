@@ -8,9 +8,17 @@ class StickyHeader {
         this.headerTrigger = $('.large-hero__title');
         this.pageSections = $('.page-section');
         this.headerLinks = $('.primary-nav a');
+        this.lazyImages = $('.lazyload');
         this.createHeaderWaypoint();
         this.createSectionWaypoints();
         this.addSmoothScrolling();
+        this.refreshWaypoints();
+    }
+
+    refreshWaypoints() {
+        this.lazyImages.on('load', function() {
+            Waypoint.refreshAll();
+        });
     }
 
     addSmoothScrolling() {
