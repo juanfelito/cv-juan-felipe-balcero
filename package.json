@@ -1,12 +1,12 @@
 {
-  "name": "travel-site",
+  "name": "cv-jfb",
   "version": "1.0.0",
   "scripts": {
     "webpack": "webpack",
     "watch": "gulp watch"
   },
   "dependencies": {
-    "jquery": "^3.2.1",
+    "jquery": "^3.3.1",
     "jquery-smooth-scroll": "2.2.0",
     "lazysizes": "4.0.1",
     "normalize.css": "^7.0.0",
@@ -37,6 +37,6 @@
     "postcss-mixins": "6.2.0",
     "postcss-nested": "2.1.2",
     "postcss-simple-vars": "4.1.0",
-    "webpack": "^3.8.1"
+    "webpack": "^3.12.0"
   }
 }
