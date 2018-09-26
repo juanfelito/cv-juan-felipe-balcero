@@ -1,18 +1,11 @@
 import $ from 'jquery';
 
 class MineSweeperTile {
-    constructor() {
-        this.startButton = $('#start-game');
-        this.events();
-    }
-
-    events() {
-        this.startButton.click(this.startGame);
-    }
-
-    startGame() {
-        console.log('Funciona');
-    }
+    constructor(value) {
+        this.hiddenValue = value;
+        this.status = 0;
+        this.template = '<div class="minesweeper-tile">' + this.hiddenValue + '</div>';
+    } 
 }
 
 export default MineSweeperTile;

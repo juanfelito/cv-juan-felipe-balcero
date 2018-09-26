@@ -11909,6 +11909,10 @@ var _Array2D = __webpack_require__(9);
 
 var _Array2D2 = _interopRequireDefault(_Array2D);
 
+var _MineSweeperTile = __webpack_require__(10);
+
+var _MineSweeperTile2 = _interopRequireDefault(_MineSweeperTile);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11920,14 +11924,21 @@ var MineSweeperBoard = function () {
         this.startButton = (0, _jquery2.default)('#start-game');
         this.numberOfMines = 4;
         this.gridSize = [5, 5];
-
+        this.minesweeperBoard = (0, _jquery2.default)('#minesweeper-board');
         this.events();
+        this.setBoardwidth();
     }
 
     _createClass(MineSweeperBoard, [{
         key: 'events',
         value: function events() {
             this.startButton.click(this.startGame.bind(this));
+        }
+    }, {
+        key: 'setBoardwidth',
+        value: function setBoardwidth() {
+            var width = 20 * this.gridSize[1];
+            this.minesweeperBoard.css("width", width + 'px');
         }
     }, {
         key: 'startGame',
@@ -11941,6 +11952,7 @@ var MineSweeperBoard = function () {
             }
             this.countSurroundingMines();
             this.minesPosition.printArray();
+            this.printBoard();
         }
     }, {
         key: 'countSurroundingMines',
@@ -11949,56 +11961,147 @@ var MineSweeperBoard = function () {
                 for (var j = 0; j < this.minesPosition.ySize; j++) {
                     if (this.minesPosition.getAt(i, j) !== 9) {
                         var mines = 0;
-                        // Top-left corner
-                        if (i === 0 && j === 0) {
-                            if (this.minesPosition.getAt(i, j + 1) === 9) {
-                                mines += 1;
-                            }
-                            if (this.minesPosition.getAt(i + 1, j) === 9) {
-                                mines += 1;
-                            }
-                            if (this.minesPosition.getAt(i + 1, j + 1) === 9) {
-                                mines += 1;
-                            }
+
+                        // Corners
+                        if (i === 0 && j === 0 || i === 0 && j === this.minesPosition.ySize - 1 || i === this.minesPosition.xSize - 1 && j === 0 || i === this.minesPosition.xSize - 1 && j === this.minesPosition.ySize - 1) {
+                            mines = this.countCornerMines(i, j);
+                        } else if (i === 0 || j === 0 || i === this.minesPosition.xSize - 1 || j === this.minesPosition.ySize - 1) {
+                            mines = this.countSideMines(i, j);
+                        } else {
+                            mines = this.countCenterMines(i, j);
                         }
-                        // Top-right corner
-                        if (i === 0 && j === this.minesPosition.ySize - 1) {
-                            if (this.minesPosition.getAt(i, j - 1) === 9) {
-                                mines += 1;
-                            }
-                            if (this.minesPosition.getAt(i + 1, j) === 9) {
-                                mines += 1;
-                            }
-                            if (this.minesPosition.getAt(i + 1, j - 1) === 9) {
-                                mines += 1;
-                            }
-                        }
-                        // Bottom-left corner
-                        if (i === this.minesPosition.xSize - 1 && j === 0) {
-                            if (this.minesPosition.getAt(i, j + 1) === 9) {
-                                mines += 1;
-                            }
-                            if (this.minesPosition.getAt(i - 1, j) === 9) {
-                                mines += 1;
-                            }
-                            if (this.minesPosition.getAt(i - 1, j + 1) === 9) {
-                                mines += 1;
-                            }
-                        }
-                        // Bottom-right corner
-                        if (i === this.minesPosition.xSize - 1 && j === this.minesPosition.ySize - 1) {
-                            if (this.minesPosition.getAt(i, j - 1) === 9) {
-                                mines += 1;
-                            }
-                            if (this.minesPosition.getAt(i - 1, j) === 9) {
-                                mines += 1;
-                            }
-                            if (this.minesPosition.getAt(i - 1, j - 1) === 9) {
-                                mines += 1;
-                            }
-                        }
+
                         this.minesPosition.setAt(i, j, mines);
                     }
+                }
+            }
+        }
+    }, {
+        key: 'countCornerMines',
+        value: function countCornerMines(x, y) {
+            var mines = 0;
+            if (x === 0) {
+                if (this.minesPosition.getAt(x + 1, y) === 9) {
+                    mines += 1;
+                }
+                if (y === 0) {
+                    if (this.minesPosition.getAt(x + 1, y + 1) === 9) {
+                        mines += 1;
+                    }
+                } else {
+                    if (this.minesPosition.getAt(x + 1, y - 1) === 9) {
+                        mines += 1;
+                    }
+                }
+            } else {
+                if (this.minesPosition.getAt(x - 1, y) === 9) {
+                    mines += 1;
+                }
+                if (y === 0) {
+                    if (this.minesPosition.getAt(x - 1, y + 1) === 9) {
+                        mines += 1;
+                    }
+                } else {
+                    if (this.minesPosition.getAt(x - 1, y - 1) === 9) {
+                        mines += 1;
+                    }
+                }
+            }
+
+            if (y === 0) {
+                if (this.minesPosition.getAt(x, y + 1) === 9) {
+                    mines += 1;
+                }
+            } else {
+                if (this.minesPosition.getAt(x, y - 1) === 9) {
+                    mines += 1;
+                }
+            }
+            return mines;
+        }
+    }, {
+        key: 'countSideMines',
+        value: function countSideMines(x, y) {
+            var mines = 0;
+            if (x === 0) {
+                for (var i = y - 1; i <= y + 1; i++) {
+                    if (this.minesPosition.getAt(x + 1, i) === 9) {
+                        mines += 1;
+                    }
+                }
+                if (this.minesPosition.getAt(x, y - 1) === 9) {
+                    mines += 1;
+                }
+                if (this.minesPosition.getAt(x, y + 1) === 9) {
+                    mines += 1;
+                }
+            } else if (y === 0) {
+                for (var i = x - 1; i <= x + 1; i++) {
+                    if (this.minesPosition.getAt(i, y + 1) === 9) {
+                        mines += 1;
+                    }
+                }
+                if (this.minesPosition.getAt(x - 1, y) === 9) {
+                    mines += 1;
+                }
+                if (this.minesPosition.getAt(x + 1, y) === 9) {
+                    mines += 1;
+                }
+            } else if (x === this.minesPosition.xSize - 1) {
+                for (var i = y - 1; i <= y + 1; i++) {
+                    if (this.minesPosition.getAt(x - 1, i) === 9) {
+                        mines += 1;
+                    }
+                }
+                if (this.minesPosition.getAt(x, y - 1) === 9) {
+                    mines += 1;
+                }
+                if (this.minesPosition.getAt(x, y + 1) === 9) {
+                    mines += 1;
+                }
+            } else {
+                for (var i = x - 1; i <= x + 1; i++) {
+                    if (this.minesPosition.getAt(i, y - 1) === 9) {
+                        mines += 1;
+                    }
+                }
+                if (this.minesPosition.getAt(x - 1, y) === 9) {
+                    mines += 1;
+                }
+                if (this.minesPosition.getAt(x + 1, y) === 9) {
+                    mines += 1;
+                }
+            }
+            return mines;
+        }
+    }, {
+        key: 'countCenterMines',
+        value: function countCenterMines(x, y) {
+            var mines = 0;
+            for (var i = y - 1; i <= y + 1; i++) {
+                if (this.minesPosition.getAt(x - 1, i) === 9) {
+                    mines += 1;
+                }
+                if (this.minesPosition.getAt(x + 1, i) === 9) {
+                    mines += 1;
+                }
+            }
+            if (this.minesPosition.getAt(x, y - 1) === 9) {
+                mines += 1;
+            }
+            if (this.minesPosition.getAt(x, y + 1) === 9) {
+                mines += 1;
+            }
+            return mines;
+        }
+    }, {
+        key: 'printBoard',
+        value: function printBoard() {
+            this.minesweeperBoard.html('');
+            for (var i = 0; i < this.minesPosition.xSize; i++) {
+                for (var j = 0; j < this.minesPosition.ySize; j++) {
+                    var tile = new _MineSweeperTile2.default(this.minesPosition.getAt(i, j));
+                    this.minesweeperBoard.append(tile.template);
                 }
             }
         }
@@ -12048,6 +12151,9 @@ var Array2D = function () {
     value: function setAt(x, y, val) {
       this.innerArray[x + this.ySize * y] = val;
     }
+
+    //For debbuging
+
   }, {
     key: 'printArray',
     value: function printArray() {
@@ -12058,6 +12164,7 @@ var Array2D = function () {
         }
         console.log(fila);
       }
+      console.log('');
     }
   }]);
 
@@ -12065,6 +12172,35 @@ var Array2D = function () {
 }();
 
 exports.default = Array2D;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _jquery = __webpack_require__(0);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MineSweeperTile = function MineSweeperTile(value) {
+    _classCallCheck(this, MineSweeperTile);
+
+    this.hiddenValue = value;
+    this.status = 0;
+    this.template = '<div class="minesweeper-tile">' + this.hiddenValue + '</div>';
+};
+
+exports.default = MineSweeperTile;
 
 /***/ })
 /******/ ]);

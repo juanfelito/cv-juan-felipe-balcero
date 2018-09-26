@@ -16,6 +16,7 @@ class Array2D {
       this.innerArray[x+this.ySize*y]=val;
   }
 
+  //For debbuging
   printArray() {
     for (var i = 0; i < this.xSize; i++) {
       let fila = '';
@@ -24,6 +25,7 @@ class Array2D {
       }
       console.log(fila);
     }
+    console.log('');
   }
 }
 
