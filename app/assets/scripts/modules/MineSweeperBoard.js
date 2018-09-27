@@ -17,8 +17,10 @@ class MineSweeperBoard {
     }
 
     setBoardwidth() {
-        let width = 20 * this.gridSize[1];
+        let height = 54 * this.gridSize[0];
+        let width = 54 * this.gridSize[1];
         this.minesweeperBoard.css("width", width+'px');
+        this.minesweeperBoard.css("height", height+'px');
     }
 
     startGame() {

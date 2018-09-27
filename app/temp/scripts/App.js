@@ -11937,8 +11937,10 @@ var MineSweeperBoard = function () {
     }, {
         key: 'setBoardwidth',
         value: function setBoardwidth() {
-            var width = 20 * this.gridSize[1];
+            var height = 54 * this.gridSize[0];
+            var width = 54 * this.gridSize[1];
             this.minesweeperBoard.css("width", width + 'px');
+            this.minesweeperBoard.css("height", height + 'px');
         }
     }, {
         key: 'startGame',
@@ -12197,7 +12199,7 @@ var MineSweeperTile = function MineSweeperTile(value) {
 
     this.hiddenValue = value;
     this.status = 0;
-    this.template = '<div class="minesweeper-tile">' + this.hiddenValue + '</div>';
+    this.template = '<div class="minesweeper-board__tile">' + this.hiddenValue + '</div>';
 };
 
 exports.default = MineSweeperTile;
