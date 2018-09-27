@@ -11922,8 +11922,8 @@ var MineSweeperBoard = function () {
         _classCallCheck(this, MineSweeperBoard);
 
         this.startButton = (0, _jquery2.default)('#start-game');
-        this.numberOfMines = 4;
-        this.gridSize = [5, 5];
+        this.numberOfMines = 20;
+        this.gridSize = [8, 10];
         this.minesweeperBoard = (0, _jquery2.default)('#minesweeper-board');
         this.events();
     }
@@ -12102,7 +12102,7 @@ var MineSweeperBoard = function () {
             this.minesweeperBoard.html('');
             for (var i = 0; i < this.minesPosition.xSize; i++) {
                 for (var j = 0; j < this.minesPosition.ySize; j++) {
-                    var tileTemplate = '<div class="minesweeper-board__tile" id="' + i + '-' + j + '"></div>';
+                    var tileTemplate = '<div class="minesweeper-board__tile" id="' + i + '-' + j + '" oncontextmenu="return false;"></div>';
                     this.minesweeperBoard.append(tileTemplate);
                     var tile = new _MineSweeperTile2.default(i, j, this.minesPosition.getAt(i, j));
                 }
@@ -12205,19 +12205,47 @@ var MineSweeperTile = function () {
         this.hiddenValue = value;
         this.tile = (0, _jquery2.default)("#" + x + "-" + y);
         this.events();
+        this.flagIcon = '<i class="fas fa-flag"></i>';
+        this.bombIcon = '<i class="fas fa-bomb"></i>';
+        this.questionIcon = '<i class="fas fa-question"></i>';
     }
 
     _createClass(MineSweeperTile, [{
         key: "events",
         value: function events() {
             this.tile.click(this.handleClick.bind(this));
+            this.tile.contextmenu(this.handleRightClick.bind(this));
         }
     }, {
         key: "handleClick",
         value: function handleClick() {
-            if (this.status != 1) {
-                this.tile.html(this.hiddenValue);
+            if (this.status === 0) {
+                if (this.hiddenValue !== 9) {
+                    this.tile.html(this.hiddenValue);
+                } else {
+                    this.tile.html(this.bombIcon);
+                }
                 this.status = 1;
+            }
+        }
+    }, {
+        key: "handleRightClick",
+        value: function handleRightClick() {
+            switch (this.status) {
+                case 0:
+                    this.tile.html(this.flagIcon);
+                    this.status = 2;
+                    break;
+                case 2:
+                    this.tile.html(this.questionIcon);
+                    this.status = 3;
+                    break;
+                case 3:
+                    this.tile.html('');
+                    this.status = 0;
+                    break;
+                default:
+                    break;
             }
         }
     }]);

@@ -5,8 +5,8 @@ import MineSweeperTile from './MineSweeperTile';
 class MineSweeperBoard {
     constructor() {
         this.startButton = $('#start-game');
-        this.numberOfMines = 4;
-        this.gridSize = [5, 5];
+        this.numberOfMines = 20;
+        this.gridSize = [8, 10];
         this.minesweeperBoard = $('#minesweeper-board');
         this.events();        
     }
@@ -175,7 +175,7 @@ class MineSweeperBoard {
         this.minesweeperBoard.html('');
         for (var i = 0; i < this.minesPosition.xSize; i++) {
             for (var j = 0; j < this.minesPosition.ySize; j++) {
-                let tileTemplate = '<div class="minesweeper-board__tile" id="' + i + '-' + j +'"></div>';
+                let tileTemplate = '<div class="minesweeper-board__tile" id="' + i + '-' + j +'" oncontextmenu="return false;"></div>';
                 this.minesweeperBoard.append(tileTemplate);
                 let tile = new MineSweeperTile(i, j, this.minesPosition.getAt(i, j));
             }

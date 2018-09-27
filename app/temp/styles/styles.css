@@ -1468,6 +1468,7 @@ a {
         cursor: pointer;
         text-align: center;
         line-height: 50px;
+        color: #000;
     }
 
 .minesweeper-board__tile:hover {
