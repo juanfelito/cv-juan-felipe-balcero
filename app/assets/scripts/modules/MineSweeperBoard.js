@@ -8,8 +8,7 @@ class MineSweeperBoard {
         this.numberOfMines = 4;
         this.gridSize = [5, 5];
         this.minesweeperBoard = $('#minesweeper-board');
-        this.events();
-        this.setBoardwidth();
+        this.events();        
     }
 
     events() {
@@ -33,6 +32,7 @@ class MineSweeperBoard {
         }
         this.countSurroundingMines();
         this.minesPosition.printArray();
+        this.setBoardwidth();
         this.printBoard();
     }
 
@@ -175,8 +175,9 @@ class MineSweeperBoard {
         this.minesweeperBoard.html('');
         for (var i = 0; i < this.minesPosition.xSize; i++) {
             for (var j = 0; j < this.minesPosition.ySize; j++) {
-                let tile = new MineSweeperTile(this.minesPosition.getAt(i, j));
-                this.minesweeperBoard.append(tile.template);
+                let tileTemplate = '<div class="minesweeper-board__tile" id="' + i + '-' + j +'"></div>';
+                this.minesweeperBoard.append(tileTemplate);
+                let tile = new MineSweeperTile(i, j, this.minesPosition.getAt(i, j));
             }
         }
     }

@@ -11926,7 +11926,6 @@ var MineSweeperBoard = function () {
         this.gridSize = [5, 5];
         this.minesweeperBoard = (0, _jquery2.default)('#minesweeper-board');
         this.events();
-        this.setBoardwidth();
     }
 
     _createClass(MineSweeperBoard, [{
@@ -11954,6 +11953,7 @@ var MineSweeperBoard = function () {
             }
             this.countSurroundingMines();
             this.minesPosition.printArray();
+            this.setBoardwidth();
             this.printBoard();
         }
     }, {
@@ -12102,8 +12102,9 @@ var MineSweeperBoard = function () {
             this.minesweeperBoard.html('');
             for (var i = 0; i < this.minesPosition.xSize; i++) {
                 for (var j = 0; j < this.minesPosition.ySize; j++) {
-                    var tile = new _MineSweeperTile2.default(this.minesPosition.getAt(i, j));
-                    this.minesweeperBoard.append(tile.template);
+                    var tileTemplate = '<div class="minesweeper-board__tile" id="' + i + '-' + j + '"></div>';
+                    this.minesweeperBoard.append(tileTemplate);
+                    var tile = new _MineSweeperTile2.default(i, j, this.minesPosition.getAt(i, j));
                 }
             }
         }
@@ -12186,6 +12187,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _jquery = __webpack_require__(0);
 
 var _jquery2 = _interopRequireDefault(_jquery);
@@ -12194,13 +12197,33 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var MineSweeperTile = function MineSweeperTile(value) {
-    _classCallCheck(this, MineSweeperTile);
+var MineSweeperTile = function () {
+    function MineSweeperTile(x, y, value) {
+        _classCallCheck(this, MineSweeperTile);
 
-    this.hiddenValue = value;
-    this.status = 0;
-    this.template = '<div class="minesweeper-board__tile">' + this.hiddenValue + '</div>';
-};
+        this.status = 0;
+        this.hiddenValue = value;
+        this.tile = (0, _jquery2.default)("#" + x + "-" + y);
+        this.events();
+    }
+
+    _createClass(MineSweeperTile, [{
+        key: "events",
+        value: function events() {
+            this.tile.click(this.handleClick.bind(this));
+        }
+    }, {
+        key: "handleClick",
+        value: function handleClick() {
+            if (this.status != 1) {
+                this.tile.html(this.hiddenValue);
+                this.status = 1;
+            }
+        }
+    }]);
+
+    return MineSweeperTile;
+}();
 
 exports.default = MineSweeperTile;
 
