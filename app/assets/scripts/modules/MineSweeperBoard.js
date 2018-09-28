@@ -42,7 +42,6 @@ class MineSweeperBoard {
                 if(this.minesPosition.getAt(i, j) !== 9) {
                     let mines = 0;
                     
-                    // Corners
                     if((i === 0 && j === 0) || (i === 0 && j === this.minesPosition.ySize - 1) || (i === this.minesPosition.xSize - 1 && j === 0) || (i === this.minesPosition.xSize - 1 && j === this.minesPosition.ySize - 1)) {
                         mines = this.countCornerMines(i, j);                     
                     } else if(i === 0 || j === 0 || i === this.minesPosition.xSize - 1 || j === this.minesPosition.ySize - 1) {
@@ -177,7 +176,7 @@ class MineSweeperBoard {
             for (var j = 0; j < this.minesPosition.ySize; j++) {
                 let tileTemplate = '<div class="minesweeper-board__tile" id="' + i + '-' + j +'" oncontextmenu="return false;"></div>';
                 this.minesweeperBoard.append(tileTemplate);
-                let tile = new MineSweeperTile(i, j, this.minesPosition.getAt(i, j));
+                let tile = new MineSweeperTile(i, j, this.minesPosition.getAt(i, j), this.minesPosition.xSize, this.minesPosition.ySize);
             }
         }
     }

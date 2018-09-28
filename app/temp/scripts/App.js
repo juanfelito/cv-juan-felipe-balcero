@@ -11964,7 +11964,6 @@ var MineSweeperBoard = function () {
                     if (this.minesPosition.getAt(i, j) !== 9) {
                         var mines = 0;
 
-                        // Corners
                         if (i === 0 && j === 0 || i === 0 && j === this.minesPosition.ySize - 1 || i === this.minesPosition.xSize - 1 && j === 0 || i === this.minesPosition.xSize - 1 && j === this.minesPosition.ySize - 1) {
                             mines = this.countCornerMines(i, j);
                         } else if (i === 0 || j === 0 || i === this.minesPosition.xSize - 1 || j === this.minesPosition.ySize - 1) {
@@ -12104,7 +12103,7 @@ var MineSweeperBoard = function () {
                 for (var j = 0; j < this.minesPosition.ySize; j++) {
                     var tileTemplate = '<div class="minesweeper-board__tile" id="' + i + '-' + j + '" oncontextmenu="return false;"></div>';
                     this.minesweeperBoard.append(tileTemplate);
-                    var tile = new _MineSweeperTile2.default(i, j, this.minesPosition.getAt(i, j));
+                    var tile = new _MineSweeperTile2.default(i, j, this.minesPosition.getAt(i, j), this.minesPosition.xSize, this.minesPosition.ySize);
                 }
             }
         }
@@ -12198,11 +12197,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var MineSweeperTile = function () {
-    function MineSweeperTile(x, y, value) {
+    function MineSweeperTile(x, y, value, xSize, ySize) {
         _classCallCheck(this, MineSweeperTile);
 
         this.status = 0;
         this.hiddenValue = value;
+        this.x = x;
+        this.y = y;
+        this.xSize = xSize;
+        this.ySize = ySize;
         this.tile = (0, _jquery2.default)("#" + x + "-" + y);
         this.events();
         this.flagIcon = '<i class="fas fa-flag"></i>';
@@ -12220,7 +12223,9 @@ var MineSweeperTile = function () {
         key: "handleClick",
         value: function handleClick() {
             if (this.status === 0) {
-                if (this.hiddenValue !== 9) {
+                if (this.hiddenValue === 0) {
+                    this.handleZeroClick();
+                } else if (this.hiddenValue !== 9) {
                     this.tile.html(this.hiddenValue);
                 } else {
                     this.tile.html(this.bombIcon);
@@ -12247,6 +12252,102 @@ var MineSweeperTile = function () {
                 default:
                     break;
             }
+        }
+    }, {
+        key: "handleZeroClick",
+        value: function handleZeroClick() {
+            this.tile.html(this.hiddenValue);
+            this.status = 1;
+            if (this.x === 0 && this.y === 0 || this.x === 0 && this.y === this.ySize - 1 || this.x === this.xSize - 1 && this.y === 0 || this.x === this.xSize - 1 && this.y === this.ySize - 1) {
+                this.zeroCorner(this.x, this.y);
+            } else if (this.x === 0 || this.y === 0 || this.x === this.xSize - 1 || this.y === this.ySize - 1) {
+                this.zeroSides(this.x, this.y, this.xSize);
+            } else {
+                this.zeroCenter(this.x, this.y);
+            }
+        }
+    }, {
+        key: "zeroCorner",
+        value: function zeroCorner(x, y) {
+            var arr_toClick = new Array();
+
+            if (x === 0) {
+                arr_toClick.push((0, _jquery2.default)('#' + (x + 1) + "-" + y));
+
+                if (y === 0) {
+                    arr_toClick.push((0, _jquery2.default)('#' + (x + 1) + "-" + (y + 1)));
+                } else {
+                    arr_toClick.push((0, _jquery2.default)('#' + (x + 1) + "-" + (y - 1)));
+                }
+            } else {
+                arr_toClick.push((0, _jquery2.default)('#' + (x - 1) + "-" + y));
+                if (y === 0) {
+                    arr_toClick.push((0, _jquery2.default)('#' + (x - 1) + "-" + (y + 1)));
+                } else {
+                    arr_toClick.push((0, _jquery2.default)('#' + (x - 1) + "-" + (y - 1)));
+                }
+            }
+
+            if (y === 0) {
+                arr_toClick.push((0, _jquery2.default)('#' + x + "-" + (y + 1)));
+            } else {
+                arr_toClick.push((0, _jquery2.default)('#' + x + "-" + (y - 1)));
+            }
+
+            arr_toClick.forEach(function (celda) {
+                celda.click();
+            });
+        }
+    }, {
+        key: "zeroSides",
+        value: function zeroSides(x, y, xSize) {
+            var arr_toClick = new Array();
+
+            if (x === 0) {
+                for (var i = y - 1; i <= y + 1; i++) {
+                    arr_toClick.push((0, _jquery2.default)('#' + (x + 1) + "-" + i));
+                }
+                arr_toClick.push((0, _jquery2.default)('#' + x + "-" + (y - 1)));
+                arr_toClick.push((0, _jquery2.default)('#' + x + "-" + (y + 1)));
+            } else if (y === 0) {
+                for (var i = x - 1; i <= x + 1; i++) {
+                    arr_toClick.push((0, _jquery2.default)('#' + i + "-" + (y + 1)));
+                }
+                arr_toClick.push((0, _jquery2.default)('#' + (x - 1) + "-" + y));
+                arr_toClick.push((0, _jquery2.default)('#' + (x + 1) + "-" + y));
+            } else if (x === xSize - 1) {
+                for (var i = y - 1; i <= y + 1; i++) {
+                    arr_toClick.push((0, _jquery2.default)('#' + (x - 1) + "-" + i));
+                }
+                arr_toClick.push((0, _jquery2.default)('#' + x + "-" + (y - 1)));
+                arr_toClick.push((0, _jquery2.default)('#' + x + "-" + (y + 1)));
+            } else {
+                for (var i = x - 1; i <= x + 1; i++) {
+                    arr_toClick.push((0, _jquery2.default)('#' + i + "-" + (y - 1)));
+                }
+                arr_toClick.push((0, _jquery2.default)('#' + (x - 1) + "-" + y));
+                arr_toClick.push((0, _jquery2.default)('#' + (x + 1) + "-" + y));
+            }
+
+            arr_toClick.forEach(function (celda) {
+                celda.click();
+            });
+        }
+    }, {
+        key: "zeroCenter",
+        value: function zeroCenter(x, y) {
+            var arr_toClick = new Array();
+
+            for (var i = y - 1; i <= y + 1; i++) {
+                arr_toClick.push((0, _jquery2.default)('#' + (x - 1) + "-" + i));
+                arr_toClick.push((0, _jquery2.default)('#' + (x + 1) + "-" + i));
+            }
+            arr_toClick.push((0, _jquery2.default)('#' + x + "-" + (y - 1)));
+            arr_toClick.push((0, _jquery2.default)('#' + x + "-" + (y + 1)));
+
+            arr_toClick.forEach(function (celda) {
+                celda.click();
+            });
         }
     }]);
 
