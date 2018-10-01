@@ -174,7 +174,7 @@ class MineSweeperBoard {
         this.minesweeperBoard.html('');
         for (var i = 0; i < this.minesPosition.xSize; i++) {
             for (var j = 0; j < this.minesPosition.ySize; j++) {
-                let tileTemplate = '<div class="minesweeper-board__tile" id="' + i + '-' + j +'" oncontextmenu="return false;"></div>';
+                let tileTemplate = '<div class="minesweeper-board__tile minesweeper-board__tile--closed" id="' + i + '-' + j +'" oncontextmenu="return false;" ></div>';
                 this.minesweeperBoard.append(tileTemplate);
                 let tile = new MineSweeperTile(i, j, this.minesPosition.getAt(i, j), this.minesPosition.xSize, this.minesPosition.ySize);
             }

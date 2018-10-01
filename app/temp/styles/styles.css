@@ -547,6 +547,7 @@ a {
     text-decoration: none;
     padding: 0.75rem 1.2rem;
     display: inline-block;
+    cursor: pointer;
 }
 
 .btn--orange {
@@ -1471,7 +1472,11 @@ a {
         color: #000;
     }
 
-.minesweeper-board__tile:hover {
-            -webkit-box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-                    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+.minesweeper-board__tile--closed {
+            background-color: #d59541;
         }
+
+.minesweeper-board__tile--closed:hover {
+                -webkit-box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+                        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+            }

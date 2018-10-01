@@ -12101,7 +12101,7 @@ var MineSweeperBoard = function () {
             this.minesweeperBoard.html('');
             for (var i = 0; i < this.minesPosition.xSize; i++) {
                 for (var j = 0; j < this.minesPosition.ySize; j++) {
-                    var tileTemplate = '<div class="minesweeper-board__tile" id="' + i + '-' + j + '" oncontextmenu="return false;"></div>';
+                    var tileTemplate = '<div class="minesweeper-board__tile minesweeper-board__tile--closed" id="' + i + '-' + j + '" oncontextmenu="return false;" ></div>';
                     this.minesweeperBoard.append(tileTemplate);
                     var tile = new _MineSweeperTile2.default(i, j, this.minesPosition.getAt(i, j), this.minesPosition.xSize, this.minesPosition.ySize);
                 }
@@ -12218,6 +12218,7 @@ var MineSweeperTile = function () {
         value: function events() {
             this.tile.click(this.handleClick.bind(this));
             this.tile.contextmenu(this.handleRightClick.bind(this));
+            this.tile.dblclick(this.handleDblClick.bind(this));
         }
     }, {
         key: "handleClick",
@@ -12231,6 +12232,7 @@ var MineSweeperTile = function () {
                     this.tile.html(this.bombIcon);
                 }
                 this.status = 1;
+                this.tile.removeClass('minesweeper-board__tile--closed');
             }
         }
     }, {
@@ -12252,6 +12254,11 @@ var MineSweeperTile = function () {
                 default:
                     break;
             }
+        }
+    }, {
+        key: "handleDblClick",
+        value: function handleDblClick() {
+            console.log(this.hiddenValue);
         }
     }, {
         key: "handleZeroClick",

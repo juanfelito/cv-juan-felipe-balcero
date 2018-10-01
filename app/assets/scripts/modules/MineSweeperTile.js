@@ -18,6 +18,7 @@ class MineSweeperTile {
     events() {
         this.tile.click(this.handleClick.bind(this));
         this.tile.contextmenu(this.handleRightClick.bind(this));
+        this.tile.dblclick(this.handleDblClick.bind(this));
     }
 
     handleClick() {
@@ -30,6 +31,7 @@ class MineSweeperTile {
                 this.tile.html(this.bombIcon);
             }
             this.status = 1;
+            this.tile.removeClass('minesweeper-board__tile--closed');
         }
     }
 
@@ -50,6 +52,10 @@ class MineSweeperTile {
             default:
                 break;
         }
+    }
+
+    handleDblClick() {
+        console.log(this.hiddenValue);
     }
 
     handleZeroClick() {
